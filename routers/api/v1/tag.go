@@ -6,6 +6,7 @@ import (
 	"github.com/unknwon/com"
 	"go-gin-example/models"
 	"go-gin-example/pkg/e"
+	log "go-gin-example/pkg/logging"
 	"go-gin-example/pkg/setting"
 	"go-gin-example/pkg/util"
 	"net/http"
@@ -57,6 +58,10 @@ func AddTag(c *gin.Context) {
 		}else{
 			code = e.ERROR_EXIST_TAG
 		}
+	}else{
+		for _, err := range valid.Errors{
+			log.Info("err.Key: ", err.Key, "err.Message: ", err.Message)
+		}
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"code" : code,
@@ -96,6 +101,10 @@ func EditTag(c *gin.Context) {
 		}else{
 			code = e.ERROR_NOT_EXIST_TAG
 		}
+	}else{
+		for _, err := range valid.Errors{
+			log.Info("err.Key: ", err.Key, "err.Message: ", err.Message)
+		}
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"code" : code,
@@ -117,6 +126,10 @@ func DeleteTag(c *gin.Context) {
 			models.DeleteTag(id)
 		}else{
 			code = e.ERROR_NOT_EXIST_TAG
+		}
+	}else{
+		for _, err := range valid.Errors{
+			log.Info("err.Key: ", err.Key, "err.Message: ", err.Message)
 		}
 	}
 	c.JSON(http.StatusOK, gin.H{
