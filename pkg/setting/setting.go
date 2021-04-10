@@ -12,7 +12,7 @@ var (
 	HTTPPort int
 	ReadTimeout time.Duration
 	WriteTimeout time.Duration
-
+	JwtSecret string
 	PageSize int
 )
 
@@ -56,4 +56,5 @@ func LoadApp() {
 		log.Fatalf("Fail to get section 'app' : %v", err)
 	}
 	PageSize = sec.Key("PAGE_SIZE").MustInt()
+	JwtSecret = sec.Key("JWT_SECRET").MustString("")
 }
