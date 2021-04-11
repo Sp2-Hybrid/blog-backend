@@ -12,6 +12,11 @@ import (
 	"net/http"
 )
 
+// @Summary 获取文章
+// @Produce  json
+// @Param id path int true "ID"
+// @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
+// @Router /api/v1/articles/{id} [get]
 func GetArticle(c *gin.Context){
 	id := com.StrTo(c.Param("id")).MustInt()
 
@@ -40,6 +45,12 @@ func GetArticle(c *gin.Context){
 	})
 }
 
+// @Summary 获取文章列表
+// @Produce  json
+// @Param state query int false "State"
+// @Param tag_id query string true "TagID"
+// @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
+// @Router /api/v1/articles [get]
 func GetArticles(c *gin.Context) {
 	data := make(map[string]interface{})
 	maps := make(map[string]interface{})
@@ -78,6 +89,16 @@ func GetArticles(c *gin.Context) {
 	})
 }
 
+// @Summary 添加文章
+// @Produce  json
+// @Param tag_id query string true "TagID"
+// @Param state query int false "State"
+// @Param desc query string true "desc"
+// @Param content query string true "content"
+// @Param title query string true "Title"
+// @Param created_by query string true "CreatedBy"
+// @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
+// @Router /api/v1/articles [post]
 func AddArticle(c *gin.Context)  {
 	// com.Stro:转换成字符串
 	// MustInt:转换成整数
@@ -125,6 +146,17 @@ func AddArticle(c *gin.Context)  {
 	})
 }
 
+// @Summary 修改文章
+// @Produce  json
+// @Param id path int true "ID"
+// @Param tag_id query string true "TagID"
+// @Param state query int false "State"
+// @Param desc query string true "desc"
+// @Param content query string true "content"
+// @Param title query string true "Title"
+// @Param modified_by query string true "ModifiedBy"
+// @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
+// @Router /api/v1/articles/{id} [put]
 func EditArticle(c *gin.Context)  {
 	id := com.StrTo(c.Param("id")).MustInt()
 	tagId := com.StrTo(c.Query("tag_id")).MustInt()
@@ -186,6 +218,11 @@ func EditArticle(c *gin.Context)  {
 	})
 }
 
+// @Summary 删除文章
+// @Produce  json
+// @Param id path int true "ID"
+// @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
+// @Router /api/v1/articles/{id} [delete]
 func DeleteArticle(c *gin.Context) {
 	id := com.StrTo(c.Param("id")).MustInt()
 

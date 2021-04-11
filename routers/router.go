@@ -2,6 +2,9 @@ package routers
 
 import (
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
+	_ "go-gin-example/docs"
 	"go-gin-example/middleware/jwt"
 	"go-gin-example/pkg/setting"
 	"go-gin-example/routers/api"
@@ -15,6 +18,8 @@ func InitRouter() *gin.Engine  {
 	r.Use(gin.Recovery())
 
 	gin.SetMode(setting.RunMode)
+
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	r.GET("/test", func(context *gin.Context) {
 		context.JSON(http.StatusOK, gin.H{
