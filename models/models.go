@@ -6,6 +6,7 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"go-gin-example/pkg/setting"
 	"log"
+	"time"
 )
 
 var db *gorm.DB
@@ -47,8 +48,38 @@ func init()  {
 	db.LogMode(true)
 	db.DB().SetMaxIdleConns(10)
 	db.DB().SetMaxOpenConns(100)
+
+	db.Callback().Create().Replace("gorm:update_time_stamp", updateTimeStampForCreateCallback)
+	db.Callback().Update().Replace("gorm:update_time_stamp", updateTimeStampForUpdateCallback)
 }
 
 func CloseDB()  {
 	defer db.Close()
+}
+
+func updateTimeStampForCreateCallback(scope *gorm.Scope){
+	if !scope.HasError(){
+		nowTime := time.Now().Unix()
+		if createTimeField, ok := scope.FieldByName("CreatedOn"); ok{
+			// 如何字段为空则给该字段设置nowTime时间戳
+			if createTimeField.IsBlank{
+				createTimeField.Set(nowTime)
+			}
+		}
+
+		if modifyTimeField, ok := scope.FieldByName("ModifiedOn"); ok{
+			if modifyTimeField.IsBlank{
+				modifyTimeField.Set(nowTime)
+			}
+		}
+	}
+}
+
+func updateTimeStampForUpdateCallback(scope *gorm.Scope){
+	if !scope.HasError(){
+		nowTime := time.Now().Unix()
+		if _, ok := scope.Get("gorm:update_column"); ok{
+			scope.SetColumn("ModifiedOn", nowTime)
+		}
+	}
 }

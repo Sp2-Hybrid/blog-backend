@@ -2,8 +2,6 @@ package models
 
 import (
 	"fmt"
-	"github.com/jinzhu/gorm"
-	"time"
 )
 
 type Article struct {
@@ -18,15 +16,15 @@ type Article struct {
 	State int `json:"state"`
 }
 
-func (article *Article)BeforeCreate(scope *gorm.Scope)error  {
-	scope.SetColumn("CreatedOn", time.Now().Unix())
-	return nil
-}
-
-func (article *Article)BeforeUpdate(scope *gorm.Scope)error{
-	scope.SetColumn("ModifiedOn", time.Now().Unix())
-	return nil
-}
+//func (article *Article)BeforeCreate(scope *gorm.Scope)error  {
+//	scope.SetColumn("CreatedOn", time.Now().Unix())
+//	return nil
+//}
+//
+//func (article *Article)BeforeUpdate(scope *gorm.Scope)error{
+//	scope.SetColumn("ModifiedOn", time.Now().Unix())
+//	return nil
+//}
 
 func ExistArticleByID(id int) bool{
 	var article Article
