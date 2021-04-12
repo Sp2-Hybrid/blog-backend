@@ -1,11 +1,12 @@
 package util
 
 import (
+	"fmt"
 	jwt "github.com/dgrijalva/jwt-go"
 	"go-gin-example/pkg/setting"
 	"time"
 )
-var jwtSecret = []byte(setting.JwtSecret)
+var jwtSecret = []byte(setting.AppSetting.JwtSecret)
 
 // 创建一个我们自己的声明
 type Claims struct{
@@ -33,6 +34,7 @@ func GenerateToken(username, password string)(string, error)  {
 	// 使用指定的签名方式创建签名对象
 	tokenClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	// 使用指定的secret签名并获得完整的编码后的字符串token
+	fmt.Println("-------------------",jwtSecret,"----------------------")
 	token, err := tokenClaims.SignedString(jwtSecret)
 
 	return token, err
